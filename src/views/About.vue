@@ -10,6 +10,7 @@
   </div>
 </template>
 <script lang="ts">
+
 import Vue from "vue";
 
 import initTooltip from '../functions'
