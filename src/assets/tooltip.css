@@ -1,0 +1,63 @@
+#tooltip{
+    cursor: pointer;
+    position: relative;
+}
+:root{
+    --tooltip-color: #d05358;
+    --arrow-color: #d05358;
+}
+.tooltip-container{
+    visibility: visible;
+    position: absolute;
+    width: max-content;
+    max-width: 200px;
+    height: auto;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 15px;
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+    background-color: var(--tooltip-color);
+    z-index: 2;
+}
+.tooltip-container.hidden {
+    visibility: hidden;
+    transition: opacity 0.3s ease-out;
+    opacity: 0;
+
+}
+
+.tooltip-container_warning,
+.tooltip-container_success {
+    color: #fff;
+}
+.tooltip-container>div{
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.2;
+}
+.tooltip-container>div a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tooltip-container__arrow{
+    position: absolute;
+    display: block;
+    border-width: 5px;
+    border-style: solid;
+}
+
+.tooltip-container__arrow[data-pos='top']{
+    border-color: var(--arrow-color) transparent transparent transparent;
+}
+.tooltip-container__arrow[data-pos='bottom'] {
+    border-color: transparent transparent var(--arrow-color) transparent;
+}
+.tooltip-container__arrow[data-pos='right'] {
+    border-color: transparent var(--arrow-color) transparent transparent;
+}
+.tooltip-container__arrow[data-pos='left']{
+    border-color: transparent transparent transparent var(--arrow-color);
+}
