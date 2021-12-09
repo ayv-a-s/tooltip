@@ -10,9 +10,8 @@ interface IEvent {
   addEventListener():void
 }
 
-const EX_Events =  class $AddListener implements IEvent{
+export default class $AddListener implements IEvent{
   private _event: string;
-  private element: typeof EX_TipsComponent;
   private _isOpened: boolean;
   private _tooltip: TElemTooltip;
   private _link: TElemTooltip;
@@ -46,7 +45,6 @@ const EX_Events =  class $AddListener implements IEvent{
   }
 
   constructor() {
-    this.element = EX_TipsComponent;
     this._event = 'onClick';
     this._isOpened = false;
     this._link = null;
@@ -79,14 +77,9 @@ const EX_Events =  class $AddListener implements IEvent{
         };
         break;
       default:
-        document.body.onclick = (e)=>{
-          if (e.target === this.link){
-            EX_TooltipPosition.calculatePosition();
-            this.isOpened = !this.isOpened;
-          } else {
-            this.isOpened = false;
-          }
-
+        this.link!.onclick = (e)=>{
+          EX_TooltipPosition.calculatePosition();
+          this.isOpened = !this.isOpened;
           this.changeTipsState()
         };
         break;
@@ -95,11 +88,9 @@ const EX_Events =  class $AddListener implements IEvent{
 
   private changeTipsState() {
     const tooltip = this.tooltip!;
-    console.log(tooltip);
     this.isOpened ?
       tooltip.classList.remove('hidden') :
       tooltip.classList.add('hidden');
   }
 }
 
-export default new EX_Events

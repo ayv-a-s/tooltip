@@ -13,7 +13,6 @@ export default class $TipsComponents implements ITipsComponents {
 
 
   get link():TElemTooltip{
-    //return document.getElementById(this.target)!
     return this._link
   }
   set link(elem:TElemTooltip){
@@ -21,8 +20,6 @@ export default class $TipsComponents implements ITipsComponents {
   }
 
   get tooltip():TElemTooltip{
-    //return this.link!.querySelector<HTMLElement>(`tooltip-container`)!;
-    //return this.link!.getElementsByClassName('tooltip-container')[0] as HTMLElement
     return this._tooltip
   }
   set tooltip(elem:TElemTooltip){
@@ -30,8 +27,6 @@ export default class $TipsComponents implements ITipsComponents {
   }
 
   get arrow():TElemTooltip{
-    //return this.link!.querySelector<HTMLElement>(`tooltip-container__arrow`)!;
-    //return this.link!.getElementsByClassName('tooltip-container__arrow')[0] as HTMLElement
     return this._arrow
   }
   set arrow(elem:TElemTooltip){
