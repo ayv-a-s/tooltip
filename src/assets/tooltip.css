@@ -1,7 +1,4 @@
-#tooltip{
-    cursor: pointer;
-    position: relative;
-}
+
 :root{
     --tooltip-color: #d05358;
     --arrow-color: #d05358;
@@ -24,11 +21,11 @@
     visibility: hidden;
     transition: opacity 0.3s ease-out;
     opacity: 0;
-
 }
 
 .tooltip-container_warning,
-.tooltip-container_success {
+.tooltip-container_success,
+.tooltip-container_error{
     color: #fff;
     border: 1px solid var(--tooltip-color);
 }

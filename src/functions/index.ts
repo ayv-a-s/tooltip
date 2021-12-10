@@ -6,13 +6,16 @@ function initTooltip():void {
   const links = document.querySelectorAll<HTMLElement>('[data-tooltip]');
 
   links.forEach((item)=>{
-
     const prop: TOptionsTooltip = JSON.parse(item.getAttribute('data-tooltip')!);
 
-    const EX_Tooltip = new $Tooltip(prop)
-      .bindProperties()
-      .bindElements(item)
-      .initTooltip(item)
+    if (prop.content) {
+      const EX_Tooltip = new $Tooltip(prop)
+        .bindProperties()
+        .bindElements(item)
+        .initTooltip(item)
+    } else {
+      console.log('Укажите опции для tooltip');
+    }
   })
 
 }

@@ -3,7 +3,7 @@ import $TipsComponents from "@/classes/GetTipsСomponents";
 import EX_ArrowPosition from "@/classes/SetArrowPosition";
 import EX_Colors from "@/classes/SetColors";
 import EX_CreateTooltip from "@/classes/CreateTipComponent";
-import EX_TooltipPosition from "@/classes/SetTooltipPosition";
+import $TooltipPosition from "@/classes/SetTooltipPosition";
 
 import { TContentTooltip } from "@/classes/types/contentTooltip";
 import { TElemTooltip } from "@/classes/types/elemTooltip";
@@ -29,6 +29,7 @@ export default class $Tooltip implements ITooltip {
 
   private EX_TipsComponent: $TipsComponents  = new $TipsComponents();
   private EX_Events: $AddListener = new $AddListener();
+  private EX_TooltipPosition: $TooltipPosition= new $TooltipPosition();
 
   constructor(options: TOptionsTooltip) {
     this.theme = options?.theme ? options.theme : '';
@@ -38,7 +39,7 @@ export default class $Tooltip implements ITooltip {
   }
 
   bindProperties(): this {
-    EX_TooltipPosition.position = this.position;
+    this.EX_TooltipPosition.position = this.position;
 
     EX_ArrowPosition.position = this.position;
 
@@ -56,19 +57,20 @@ export default class $Tooltip implements ITooltip {
   bindElements(link: TElemTooltip): this {
     const tip = EX_CreateTooltip.createTooltip();
 
+    EX_ArrowPosition.link = link;
+    EX_ArrowPosition.tooltip = tip[0];
+    EX_ArrowPosition.arrow = tip[1];
+
     this.EX_TipsComponent.link = link;
     this.EX_TipsComponent.tooltip = tip[0];
     this.EX_TipsComponent.arrow = tip[1];
 
+    this.EX_TooltipPosition.link = link;
+    this.EX_TooltipPosition.tooltip = tip[0];
+
     this.EX_Events.link = link;
     this.EX_Events.tooltip = tip[0];
-
-    EX_TooltipPosition.link = link;
-    EX_TooltipPosition.tooltip = tip[0];
-
-    EX_ArrowPosition.link = link;
-    EX_ArrowPosition.tooltip = tip[0];
-    EX_ArrowPosition.arrow = tip[1];
+    this.EX_Events.TooltipPosition = this.EX_TooltipPosition
 
     return this
   }
@@ -80,7 +82,7 @@ export default class $Tooltip implements ITooltip {
       link.style.cursor = 'pointer';
 
       this.EX_Events.addEventListener();
-      if (this.effect !== 'onFloat') EX_TooltipPosition.staticPosition();
+      if (this.effect !== 'onFloat') this.EX_TooltipPosition.staticPosition();
 
     } else {
       console.log('Не найдено элемента с укзанным id');

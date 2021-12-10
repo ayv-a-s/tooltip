@@ -17,7 +17,7 @@ interface IPosition{
   calculatePosition(): TPosition
 }
 
-const EX_TooltipPosition = class $TooltipPosition implements IPosition{
+export default class $TooltipPosition implements IPosition{
   private _position: string;
   private _tooltip: TElemTooltip;
   private _link: TElemTooltip;
@@ -110,20 +110,27 @@ const EX_TooltipPosition = class $TooltipPosition implements IPosition{
     }
 
     function setDefaultPos(pos: string):TPosition {
-      if (link.right > tip.width/2 && link.left > tip.width/2) return {
+      //если место есть только справа
+      if (link.right > tip.width/2 && link.left <= tip.width/2) {
+        return {
+          left: `-5px`,
+          bottom: pos === "top" ? `${link.height + 9}px` : `${-tip.height - 9}px`
+        };
+      }
+      //если место есть только слева
+      else if (link.right <= tip.width/2 && link.left > tip.width/2) {
+        return {
+          left: `${link.width / 2 - tip.width + 15}px`,
+          bottom: pos === "top" ? `${link.height + 9}px` : `${-tip.height - 9}px`
+        }
+      }
+      //если поместится по центру
+      return {
         left: `${link.width/2 - tip.width/2}px`,
         bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
       };
-      else if (link.right <= tip.width/2 && link.left > tip.width/2) return {
-        left: `${link.width/2 - tip.width + 15}px`,
-        bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
-      };
-      else return {
-          left: `${link.width/2 - tip.width/2}px`,
-          bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
-        };
     }
   }
 
 }
-export default new EX_TooltipPosition()
+

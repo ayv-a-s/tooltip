@@ -20,8 +20,10 @@ const EX_Colors = class $SetColors implements IColors{
 
   setArrowColor(): string{
     switch (this.theme) {
-      case 'warning':
+      case 'error':
         return '#d05358'
+      case 'warning':
+        return '#ffb002'
       case 'success':
         return '#32a071'
       default:
@@ -31,8 +33,10 @@ const EX_Colors = class $SetColors implements IColors{
 
   setTipColor(): string{
     switch (this.theme) {
-      case 'warning':
+      case 'error':
         return '#d05358'
+      case 'warning':
+        return '#ffb002'
       case 'success':
         return '#32a071'
       case 'fill':

@@ -1,4 +1,4 @@
-import EX_TooltipPosition from "@/classes/SetTooltipPosition";
+import $TooltipPosition from "@/classes/SetTooltipPosition";
 
 import { TElemTooltip } from "@/classes/types/elemTooltip";
 
@@ -7,6 +7,7 @@ interface IEvent {
   isOpened: boolean,
   tooltip: TElemTooltip,
   link: TElemTooltip,
+  TooltipPosition: $TooltipPosition,
   addEventListener():void
 }
 
@@ -15,6 +16,7 @@ export default class $AddListener implements IEvent{
   private _isOpened: boolean;
   private _tooltip: TElemTooltip;
   private _link: TElemTooltip;
+  private _TooltipPosition: $TooltipPosition;
 
   get event(){
     return this._event
@@ -44,18 +46,26 @@ export default class $AddListener implements IEvent{
     this._link = elem
   }
 
+  get TooltipPosition(): $TooltipPosition{
+    return this._TooltipPosition
+  }
+  set TooltipPosition(ex: $TooltipPosition){
+    this._TooltipPosition = ex
+  }
+
   constructor() {
     this._event = 'onClick';
     this._isOpened = false;
     this._link = null;
     this._tooltip = null;
+    this._TooltipPosition = new $TooltipPosition();
   }
 
   addEventListener(): void{
     switch (this.event){
       case 'onHover':
         this.link!.onpointerover = ()=>{
-          EX_TooltipPosition.calculatePosition();
+          this.TooltipPosition.calculatePosition();
           this.isOpened = true;
           this.changeTipsState();
         };
@@ -66,13 +76,13 @@ export default class $AddListener implements IEvent{
         break;
 
       case 'onFloat':
-        this.link!.onpointermove = (e)=>{
+        this.link!.onmousemove = (e)=>{
           this.link!.style.position = 'unset';
-          EX_TooltipPosition.dynamicPosition(e.clientX, e.clientY);
+          this.TooltipPosition.dynamicPosition(e.clientX, e.clientY);
           this.isOpened = true;
           this.changeTipsState();
         };
-        this.link!.onpointerleave = ()=>{
+        this.link!.onmouseleave = ()=>{
           this.isOpened = false;
           this.changeTipsState();
         };
@@ -80,11 +90,12 @@ export default class $AddListener implements IEvent{
 
       default:
         this.link!.onclick = ()=>{
-          EX_TooltipPosition.calculatePosition();
+          this.TooltipPosition.calculatePosition();
 
           this.isOpened = !this.isOpened;
           this.changeTipsState()
         };
+
         break;
     }
   }

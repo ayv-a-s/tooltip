@@ -33,10 +33,9 @@ const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
 
   private getElemCoords(elem: TElemTooltip): TElemCoords{
     const boxRect = elem!.getBoundingClientRect();
-
     return {
       top: boxRect.top,
-      right: boxRect.right,
+      right: window.innerWidth - boxRect.right, // так как elem.getBoundingClientRect().right - это elem.left + elem.width
       bottom: boxRect.bottom,
       left: boxRect.left
     };
