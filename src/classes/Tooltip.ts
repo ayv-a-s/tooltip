@@ -1,16 +1,15 @@
-import EX_CreateTooltip from '@/classes/CreateTipComponent';
-import EX_TooltipPosition from '@/classes/SetTooltipPosition';
+import $AddListener from "@/classes/SetEventsListeners";
+import $TipsComponents from "@/classes/GetTipsСomponents";
 import EX_ArrowPosition from "@/classes/SetArrowPosition";
 import EX_Colors from "@/classes/SetColors";
-import $TipsComponents from '@/classes/GetTipsСomponents'
-import $AddListener from "@/classes/SetEventsListeners"
-
-import '../assets/tooltip.css'
+import EX_CreateTooltip from "@/classes/CreateTipComponent";
+import EX_TooltipPosition from "@/classes/SetTooltipPosition";
 
 import { TContentTooltip } from "@/classes/types/contentTooltip";
-import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
 import { TElemTooltip } from "@/classes/types/elemTooltip";
+import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
 
+import '../assets/tooltip.css'
 
 interface ITooltip {
   theme: string,
@@ -31,7 +30,6 @@ export default class $Tooltip implements ITooltip {
   private EX_TipsComponent: $TipsComponents  = new $TipsComponents();
   private EX_Events: $AddListener = new $AddListener();
 
-
   constructor(options: TOptionsTooltip) {
     this.theme = options?.theme ? options.theme : '';
     this.effect = options?.effect ? options.effect : 'onClick';
@@ -49,6 +47,7 @@ export default class $Tooltip implements ITooltip {
     EX_CreateTooltip.effect = this.effect;
 
     EX_Colors.theme = this.theme;
+
     this.EX_Events.event = this.effect;
 
     return this
@@ -74,7 +73,6 @@ export default class $Tooltip implements ITooltip {
     return this
   }
 
-
   initTooltip(link: TElemTooltip): void {
     if (link) {
       link.insertAdjacentElement("beforeend",  this.EX_TipsComponent.tooltip as HTMLElement);
@@ -82,10 +80,10 @@ export default class $Tooltip implements ITooltip {
       link.style.cursor = 'pointer';
 
       this.EX_Events.addEventListener();
+      if (this.effect !== 'onFloat') EX_TooltipPosition.staticPosition();
+
     } else {
       console.log('Не найдено элемента с укзанным id');
     }
-
-    if (this.effect !== 'onFloat') EX_TooltipPosition.staticPosition()
   }
 }

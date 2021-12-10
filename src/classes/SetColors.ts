@@ -4,8 +4,7 @@ interface IColors{
   setTipColor(): string
 }
 
-const EX_Colors = class SetColors implements IColors{
-
+const EX_Colors = class $SetColors implements IColors{
   private _theme: string;
 
   set theme(value:string){
@@ -15,9 +14,8 @@ const EX_Colors = class SetColors implements IColors{
     return this._theme
   }
 
-
   constructor() {
-    this._theme = '';
+    this._theme = 'fill';
   }
 
   setArrowColor(): string{
@@ -30,6 +28,7 @@ const EX_Colors = class SetColors implements IColors{
         return '#000'
     }
   }
+
   setTipColor(): string{
     switch (this.theme) {
       case 'warning':

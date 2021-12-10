@@ -1,5 +1,5 @@
 import EX_TooltipPosition from "@/classes/SetTooltipPosition";
-import EX_TipsComponent from '@/classes/GetTipsСomponents'
+
 import { TElemTooltip } from "@/classes/types/elemTooltip";
 
 interface IEvent {
@@ -51,7 +51,7 @@ export default class $AddListener implements IEvent{
     this._tooltip = null;
   }
 
-  addEventListener():void{
+  addEventListener(): void{
     switch (this.event){
       case 'onHover':
         this.link!.onpointerover = ()=>{
@@ -64,6 +64,7 @@ export default class $AddListener implements IEvent{
           this.changeTipsState();
         };
         break;
+
       case 'onFloat':
         this.link!.onpointermove = (e)=>{
           this.link!.style.position = 'unset';
@@ -76,9 +77,11 @@ export default class $AddListener implements IEvent{
           this.changeTipsState();
         };
         break;
+
       default:
-        this.link!.onclick = (e)=>{
+        this.link!.onclick = ()=>{
           EX_TooltipPosition.calculatePosition();
+
           this.isOpened = !this.isOpened;
           this.changeTipsState()
         };
@@ -88,6 +91,7 @@ export default class $AddListener implements IEvent{
 
   private changeTipsState() {
     const tooltip = this.tooltip!;
+
     this.isOpened ?
       tooltip.classList.remove('hidden') :
       tooltip.classList.add('hidden');

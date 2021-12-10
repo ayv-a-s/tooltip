@@ -30,6 +30,7 @@
 .tooltip-container_warning,
 .tooltip-container_success {
     color: #fff;
+    border: 1px solid var(--tooltip-color);
 }
 .tooltip-container>div{
     display: block;

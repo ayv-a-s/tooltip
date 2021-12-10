@@ -1,6 +1,6 @@
 import EX_ArrowPosition from "@/classes/SetArrowPosition";
-
 import EX_GetMeasurements from "@/classes/GetMeasurements";
+
 import { TElemTooltip } from "@/classes/types/elemTooltip";
 
 type TPosition = {
@@ -29,28 +29,27 @@ const EX_TooltipPosition = class $TooltipPosition implements IPosition{
     return this._position
   }
 
-  get tooltip(): TElemTooltip{
-    return this._tooltip
-  }
   set tooltip(elem: TElemTooltip){
     this._tooltip = elem
   }
-
-  get link(): TElemTooltip{
-    return this._link
+  get tooltip(): TElemTooltip{
+    return this._tooltip
   }
+
   set link(elem: TElemTooltip){
     this._link = elem
   }
+  get link(): TElemTooltip{
+    return this._link
+  }
 
   constructor() {
-    this._position = '';
+    this._position = 'top';
     this._link = null;
     this._tooltip = null;
   }
 
   staticPosition(): void{
-
     const newPos = this.calculatePosition();
 
     this.tooltip!.style.bottom = newPos.bottom;
@@ -86,21 +85,6 @@ const EX_TooltipPosition = class $TooltipPosition implements IPosition{
     const link = EX_GetMeasurements.getInfo(this.link!);
     const tip = EX_GetMeasurements.getInfo(this.tooltip!);
 
-    function setDefaultPos(pos: string):TPosition {
-      if (link.right > tip.width/2 && link.left > tip.width/2) return {
-        left: `${link.width/2 - tip.width/2}px`,
-        bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
-      };
-      else if (link.right <= tip.width/2 && link.left > tip.width/2) return {
-        left: `${link.width/2 - tip.width + 15}px`,
-        bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
-      };
-      else return {
-          left: `${link.width/2 - tip.width/2}px`,
-          bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
-        };
-    }
-
     switch (this.position) {
       case 'left':
       case 'right':
@@ -123,6 +107,21 @@ const EX_TooltipPosition = class $TooltipPosition implements IPosition{
         }
       default:
         return setDefaultPos(this.position);
+    }
+
+    function setDefaultPos(pos: string):TPosition {
+      if (link.right > tip.width/2 && link.left > tip.width/2) return {
+        left: `${link.width/2 - tip.width/2}px`,
+        bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
+      };
+      else if (link.right <= tip.width/2 && link.left > tip.width/2) return {
+        left: `${link.width/2 - tip.width + 15}px`,
+        bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
+      };
+      else return {
+          left: `${link.width/2 - tip.width/2}px`,
+          bottom: pos === 'top' ? `${link.height + 9}px` : `${-tip.height - 9}px`
+        };
     }
   }
 

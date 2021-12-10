@@ -1,4 +1,5 @@
 import EX_GetMeasurements from "@/classes/GetMeasurements";
+
 import { TElemTooltip } from "@/classes/types/elemTooltip";
 
 type IArrow = {
@@ -15,11 +16,11 @@ const EX_ArrowPosition = class $ArrowPosition implements IArrow{
   private _link: TElemTooltip;
   private _arrow: TElemTooltip;
 
-  set position(value:string){
-    this._position = value;
-  }
   get position(){
     return this._position
+  }
+  set position(value:string){
+    this._position = value;
   }
 
   get tooltip(): TElemTooltip{

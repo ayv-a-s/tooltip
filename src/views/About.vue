@@ -2,7 +2,12 @@
   <div class="about">
     <h1 :data-tooltip="JSON.stringify(test1)" id="dd" >This is an about page</h1>
     <div class="container">
-      <p><span :data-tooltip="JSON.stringify(test2)">aaa</span> aa aaaa aaa a aa a a aaaa aa aaa aaa a <span :data-tooltip="JSON.stringify(tooltipOption)" id="tooltip">tip</span> aaaa aaa aa a a aaa aaaa</p>
+      <p>
+        <span :data-tooltip="JSON.stringify(test2)">aaa</span>
+        aa aaaa aaa a aa a a aaaa aa aaa aaa a
+        <span :data-tooltip="JSON.stringify(tooltipOption)" id="tooltip">tip</span>
+        aaaa aaa aa a a aaa aaaa
+      </p>
     </div>
     <div v-for="i in 30" :key="i">
       <h1>Line {{i}}</h1>
@@ -28,7 +33,7 @@ export default Vue.extend({
       theme: 'success',
       effect:'onFloat',
       position: 'bottom',
-      content: "ПодсказОчка <br/> dfujbadfjnbo ;ajbjadfjb ln badkfj bnkaj dfnb;k jn;ROEIJ GVPDJF LKBad lfjnbv nfrjf"
+      content: "<b>ПодсказОчка</b> <br/> dfujbadfjnbo ;ajbjadfjb ln badkfj bnkaj dfnb;k jn;ROEIJ GVPDJF LKBad lfjnbv nfrjf"
     }
      return {
        tooltipOption,

@@ -26,11 +26,14 @@ const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
   private getWidth(elem: TElemTooltip): number{
     return elem!.offsetWidth;
   }
+
   private getHeight(elem: TElemTooltip): number {
     return elem!.offsetHeight
   }
+
   private getElemCoords(elem: TElemTooltip): TElemCoords{
     const boxRect = elem!.getBoundingClientRect();
+
     return {
       top: boxRect.top,
       right: boxRect.right,

@@ -34,9 +34,9 @@ const EX_CreateTooltip = class $CreateTooltip implements ICreateTooltip{
   }
 
   constructor() {
-    this._theme = '';
+    this._theme = 'fill';
     this._content = '';
-    this._effect = '';
+    this._effect = 'onClick';
   }
 
   createTooltip(): HTMLElement[]{
