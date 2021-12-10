@@ -84,7 +84,6 @@ export default class $TooltipPosition implements IPosition{
   calculatePosition(): TPosition{
     const link = EX_GetMeasurements.getInfo(this.link!);
     const tip = EX_GetMeasurements.getInfo(this.tooltip!);
-
     switch (this.position) {
       case 'left':
       case 'right':

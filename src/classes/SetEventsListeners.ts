@@ -30,6 +30,7 @@ export default class $AddListener implements IEvent{
   }
   set isOpened(state: boolean){
     this._isOpened = state;
+    this.changeTipsState()
   }
 
   get tooltip(): TElemTooltip{
@@ -67,11 +68,9 @@ export default class $AddListener implements IEvent{
         this.link!.onpointerover = ()=>{
           this.TooltipPosition.calculatePosition();
           this.isOpened = true;
-          this.changeTipsState();
         };
         this.link!.onpointerleave = ()=>{
           this.isOpened = false;
-          this.changeTipsState();
         };
         break;
 
@@ -80,24 +79,21 @@ export default class $AddListener implements IEvent{
           this.link!.style.position = 'unset';
           this.TooltipPosition.dynamicPosition(e.clientX, e.clientY);
           this.isOpened = true;
-          this.changeTipsState();
         };
         this.link!.onmouseleave = ()=>{
           this.isOpened = false;
-          this.changeTipsState();
         };
         break;
 
       default:
         this.link!.onclick = ()=>{
           this.TooltipPosition.calculatePosition();
-
           this.isOpened = !this.isOpened;
-          this.changeTipsState()
         };
-
         break;
     }
+
+
   }
 
   private changeTipsState() {

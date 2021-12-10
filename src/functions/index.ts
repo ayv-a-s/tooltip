@@ -9,14 +9,18 @@ function initTooltip():void {
     const prop: TOptionsTooltip = JSON.parse(item.getAttribute('data-tooltip')!);
 
     if (prop.content) {
+
       const EX_Tooltip = new $Tooltip(prop)
         .bindProperties()
         .bindElements(item)
         .initTooltip(item)
+        .closeTooltip()
     } else {
       console.log('Укажите опции для tooltip');
     }
   })
+
+
 
 }
 export default initTooltip;

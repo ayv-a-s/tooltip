@@ -1,9 +1,9 @@
 import $AddListener from "@/classes/SetEventsListeners";
 import $TipsComponents from "@/classes/GetTipsСomponents";
+import $TooltipPosition from "@/classes/SetTooltipPosition";
 import EX_ArrowPosition from "@/classes/SetArrowPosition";
 import EX_Colors from "@/classes/SetColors";
 import EX_CreateTooltip from "@/classes/CreateTipComponent";
-import $TooltipPosition from "@/classes/SetTooltipPosition";
 
 import { TContentTooltip } from "@/classes/types/contentTooltip";
 import { TElemTooltip } from "@/classes/types/elemTooltip";
@@ -18,7 +18,8 @@ interface ITooltip {
   content: TContentTooltip,
   bindProperties(): this,
   bindElements(link: TElemTooltip): this,
-  initTooltip(link: TElemTooltip): void
+  initTooltip(link: TElemTooltip): this,
+  closeTooltip():void
 }
 
 export default class $Tooltip implements ITooltip {
@@ -70,12 +71,12 @@ export default class $Tooltip implements ITooltip {
 
     this.EX_Events.link = link;
     this.EX_Events.tooltip = tip[0];
-    this.EX_Events.TooltipPosition = this.EX_TooltipPosition
+    this.EX_Events.TooltipPosition = this.EX_TooltipPosition;
 
     return this
   }
 
-  initTooltip(link: TElemTooltip): void {
+  initTooltip(link: TElemTooltip): this {
     if (link) {
       link.insertAdjacentElement("beforeend",  this.EX_TipsComponent.tooltip as HTMLElement);
       link.style.position = 'relative';
@@ -86,6 +87,14 @@ export default class $Tooltip implements ITooltip {
 
     } else {
       console.log('Не найдено элемента с укзанным id');
+    }
+
+    return this
+  }
+  //TODO: !!!!!!!!!!!!!!!!!!
+  closeTooltip():void{
+    window.onresize = () => {
+      this.EX_Events.isOpened=false;
     }
   }
 }
