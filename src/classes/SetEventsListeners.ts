@@ -66,7 +66,7 @@ export default class $AddListener implements IEvent{
     switch (this.event){
       case 'onHover':
         this.link!.onpointerover = ()=>{
-          this.TooltipPosition.calculatePosition();
+          this.TooltipPosition.staticPosition();
           this.isOpened = true;
         };
         this.link!.onpointerleave = ()=>{
@@ -87,13 +87,11 @@ export default class $AddListener implements IEvent{
 
       default:
         this.link!.onclick = ()=>{
-          this.TooltipPosition.calculatePosition();
+          this.TooltipPosition.staticPosition();
           this.isOpened = !this.isOpened;
         };
         break;
     }
-
-
   }
 
   private changeTipsState() {

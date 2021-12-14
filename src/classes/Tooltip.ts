@@ -1,7 +1,6 @@
 import $AddListener from "@/classes/SetEventsListeners";
 import $TipsComponents from "@/classes/GetTipsСomponents";
 import $TooltipPosition from "@/classes/SetTooltipPosition";
-import EX_ArrowPosition from "@/classes/SetArrowPosition";
 import EX_Colors from "@/classes/SetColors";
 import EX_CreateTooltip from "@/classes/CreateTipComponent";
 
@@ -19,7 +18,6 @@ interface ITooltip {
   bindProperties(): this,
   bindElements(link: TElemTooltip): this,
   initTooltip(link: TElemTooltip): this,
-  closeTooltip():void
 }
 
 export default class $Tooltip implements ITooltip {
@@ -28,9 +26,10 @@ export default class $Tooltip implements ITooltip {
   position: string;
   content: TContentTooltip;
 
+  public EX_Events: $AddListener = new $AddListener();
+  public EX_TooltipPosition: $TooltipPosition= new $TooltipPosition();
+
   private EX_TipsComponent: $TipsComponents  = new $TipsComponents();
-  private EX_Events: $AddListener = new $AddListener();
-  private EX_TooltipPosition: $TooltipPosition= new $TooltipPosition();
 
   constructor(options: TOptionsTooltip) {
     this.theme = options?.theme ? options.theme : '';
@@ -42,7 +41,7 @@ export default class $Tooltip implements ITooltip {
   bindProperties(): this {
     this.EX_TooltipPosition.position = this.position;
 
-    EX_ArrowPosition.position = this.position;
+    this.EX_Events.event = this.effect;
 
     EX_CreateTooltip.theme = this.theme;
     EX_CreateTooltip.content = this.content;
@@ -50,17 +49,11 @@ export default class $Tooltip implements ITooltip {
 
     EX_Colors.theme = this.theme;
 
-    this.EX_Events.event = this.effect;
-
     return this
   }
 
   bindElements(link: TElemTooltip): this {
     const tip = EX_CreateTooltip.createTooltip();
-
-    EX_ArrowPosition.link = link;
-    EX_ArrowPosition.tooltip = tip[0];
-    EX_ArrowPosition.arrow = tip[1];
 
     this.EX_TipsComponent.link = link;
     this.EX_TipsComponent.tooltip = tip[0];
@@ -68,6 +61,7 @@ export default class $Tooltip implements ITooltip {
 
     this.EX_TooltipPosition.link = link;
     this.EX_TooltipPosition.tooltip = tip[0];
+    this.EX_TooltipPosition.arrow = tip[1];
 
     this.EX_Events.link = link;
     this.EX_Events.tooltip = tip[0];
@@ -82,19 +76,12 @@ export default class $Tooltip implements ITooltip {
       link.style.position = 'relative';
       link.style.cursor = 'pointer';
 
+      this.effect !== 'onFloat' ? this.EX_TooltipPosition.staticPosition() : this.EX_TooltipPosition.dynamicPosition(0,0);
       this.EX_Events.addEventListener();
-      if (this.effect !== 'onFloat') this.EX_TooltipPosition.staticPosition();
 
     } else {
       console.log('Не найдено элемента с укзанным id');
     }
-
     return this
-  }
-  //TODO: !!!!!!!!!!!!!!!!!!
-  closeTooltip():void{
-    window.onresize = () => {
-      this.EX_Events.isOpened=false;
-    }
   }
 }
