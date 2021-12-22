@@ -1,18 +1,18 @@
-import { TElemCoords } from '@/classes/types/elemCoords'
-import { TElemTooltip } from "@/classes/types/elemTooltip";
+import { TElementPosition } from '@/classes/types/ElementPosition'
+import { TDomElement } from "@/classes/types/DomElement";
 
 type TInfo = {
   width: number,
   height: number
-} & TElemCoords
+} & TElementPosition
 
 interface IGetMeasurements{
-  getInfo(el: TElemTooltip): TInfo
+  getInfo(el: TDomElement): TInfo
 }
 
 const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
 
-  getInfo(el: TElemTooltip): TInfo{
+  getInfo(el: TDomElement): TInfo{
     return {
       width:  this.getWidth(el),
       height: this.getHeight(el),
@@ -23,15 +23,15 @@ const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
     }
   }
 
-  private getWidth(elem: TElemTooltip): number{
+  private getWidth(elem: TDomElement): number{
     return elem!.offsetWidth;
   }
 
-  private getHeight(elem: TElemTooltip): number {
+  private getHeight(elem: TDomElement): number {
     return elem!.offsetHeight
   }
 
-  private getElemCoords(elem: TElemTooltip): TElemCoords{
+  private getElemCoords(elem: TDomElement): TElementPosition{
     const boxRect = elem!.getBoundingClientRect();
     return {
       top: boxRect.top,

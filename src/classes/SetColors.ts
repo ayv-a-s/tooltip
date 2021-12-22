@@ -1,13 +1,15 @@
+import { TTheme } from "@/classes/types/Properties";
+
 interface IColors{
-  theme: string,
+  readonly theme:TTheme,
   setArrowColor(): string,
   setTipColor(): string
 }
 
 export default class $SetColors implements IColors{
-  theme = '';
+  readonly theme:TTheme;
 
-  constructor(theme: string) {
+  constructor(theme: TTheme) {
     this.theme = theme;
   }
 

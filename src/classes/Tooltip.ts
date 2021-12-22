@@ -1,34 +1,28 @@
 import $CreateTooltip from "@/classes/CreateTipComponent";
 import $TooltipPosition from "@/classes/SetTooltipPosition";
 
-import { TContentTooltip } from "@/classes/types/contentTooltip";
-import { TElemTooltip } from "@/classes/types/elemTooltip";
-import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
+import { TDomElement } from "@/classes/types/DomElement";
+import { TProperties, TPosition, TEffect, TTheme, TContent } from "@/classes/types/Properties";
+import { TFinalComponent } from "@/classes/types/FinalComponent";
 
 import '../assets/tooltip.css'
 
-type TFinalComponent = {
-  link: TElemTooltip,
-  tooltip: TElemTooltip,
-  arrow: TElemTooltip
-}
-
 interface ITooltip {
-  readonly theme: string,
-  readonly effect: string,
-  readonly position: string,
-  readonly content: TContentTooltip,
+  readonly theme: TTheme,
+  readonly effect: TEffect,
+  readonly position: TPosition,
+  readonly content: TContent,
   isTooltipOpened: boolean
   finalComponents: TFinalComponent,
   setPosition(e?: MouseEvent): this,
-  initTooltip(link: TElemTooltip): this
+  initTooltip(link: TDomElement): this
 }
 
 export default class $Tooltip implements ITooltip {
-  readonly theme: string;
-  readonly effect: string;
-  readonly position: string;
-  readonly content: TContentTooltip;
+  readonly theme: TTheme;
+  readonly effect: TEffect;
+  readonly position: TPosition;
+  readonly content: TContent;
   readonly EX_TooltipPosition: $TooltipPosition;
   private _isTooltipOpened: boolean;
   private EX_CreateTooltip: $CreateTooltip;
@@ -42,10 +36,10 @@ export default class $Tooltip implements ITooltip {
     return this._isTooltipOpened;
   }
 
-  constructor(options: TOptionsTooltip) {
-    this.theme = options?.theme ? options.theme : '';
-    this.effect = options?.effect ? options.effect : 'onClick';
-    this.position = options?.position ? options.position : 'top';
+  constructor(options: TProperties) {
+    this.theme = options.theme!;
+    this.effect = options.effect!;
+    this.position = options.position!;
     this.content = options.content;
     this._isTooltipOpened = false;
     this.finalComponents = {
@@ -61,7 +55,7 @@ export default class $Tooltip implements ITooltip {
     this.EX_TooltipPosition = new $TooltipPosition(this.position)
   }
 
-  initTooltip(link: TElemTooltip): this {
+  initTooltip(link: TDomElement): this {
     const elem = this.EX_CreateTooltip.createTooltip();
 
     if (link) {
@@ -77,7 +71,7 @@ export default class $Tooltip implements ITooltip {
 
       this.EX_TooltipPosition.finalComponents = this.finalComponents;
     } else {
-      console.log('Не найдено элемента с укзанным id');
+      console.log('No item found with "data-tooltip"');
     }
     return this
   }

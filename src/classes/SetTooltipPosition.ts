@@ -1,16 +1,12 @@
 import EX_GetMeasurements from "@/classes/GetMeasurements";
 
-import { TElemTooltip } from "@/classes/types/elemTooltip";
+import { TFinalComponent } from "@/classes/types/FinalComponent";
 
 type TPosition = {
   left: string,
   bottom: string
 }
-type TFinalComponent = {
-  link: TElemTooltip,
-  tooltip: TElemTooltip,
-  arrow: TElemTooltip
-}
+
 interface IPosition{
   readonly position: string,
   finalComponents: TFinalComponent,

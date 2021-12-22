@@ -1,7 +1,6 @@
 import $SetColors from '@/classes/SetColors'
 
-import { TContentTooltip } from "@/classes/types/contentTooltip";
-import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
+import { TProperties, TEffect, TTheme, TContent } from "@/classes/types/Properties";
 
 type TTooltipElements = {
   tooltip: HTMLElement,
@@ -9,20 +8,20 @@ type TTooltipElements = {
 }
 
 interface ICreateTooltip{
-  readonly theme: string,
-  readonly content: TContentTooltip,
-  readonly effect: string,
+  readonly theme: TTheme,
+  readonly content: TContent,
+  readonly effect: TEffect,
   createTooltip(): TTooltipElements
 }
 
 export default class $CreateTooltip implements ICreateTooltip{
-  readonly theme: string;
-  readonly content: TContentTooltip;
-  readonly effect: string;
+  readonly theme: TTheme;
+  readonly content: TContent;
+  readonly effect: TEffect;
   private EX_Colors:$SetColors;
 
 
-  constructor(options: TOptionsTooltip) {
+  constructor(options: TProperties) {
     this.theme = options.theme!;
     this.content = options.content!;
     this.effect = options.effect!;

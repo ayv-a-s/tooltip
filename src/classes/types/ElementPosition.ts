@@ -1,4 +1,4 @@
-export type TElemCoords = {
+export type TElementPosition = {
   top: number,
   right: number,
   bottom: number,
