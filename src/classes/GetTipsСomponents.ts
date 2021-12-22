@@ -6,6 +6,8 @@ interface ITipsComponents {
   arrow: TElemTooltip
 }
 
+//TODO: удалить
+
 export default class $TipsComponents implements ITipsComponents {
   private _link: TElemTooltip;
   private _tooltip: TElemTooltip;

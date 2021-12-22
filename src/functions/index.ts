@@ -1,26 +1,25 @@
 import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
 
 import $Tooltip from "@/classes/Tooltip";
-import $SetGlobalEvents from '@/classes/SetGlobalEvents'
+import $AddListener from "@/classes/SetEventsListeners";
 
 function initTooltip():void {
   const links = document.querySelectorAll<HTMLElement>('[data-tooltip]');
-  const EX_Tooltip: $Tooltip[] = []
+  const EX_Tooltips: $Tooltip[] = []
 
   links.forEach((item)=>{
     const prop: TOptionsTooltip = JSON.parse(item.getAttribute('data-tooltip')!);
 
     if (prop.content) {
-      EX_Tooltip.push(
+      EX_Tooltips.push(
         new $Tooltip(prop)
-        .bindProperties()
-        .bindElements(item)
         .initTooltip(item)
+          .setPosition()
       )
     } else {
-      console.log('Укажите опции для tooltip');
+      console.log('Set Tooltips options');
     }
   })
-  return new $SetGlobalEvents(EX_Tooltip).changeTooltipState();
+  return new $AddListener(EX_Tooltips).addEventListener().changeTooltipState()
 }
 export default initTooltip;

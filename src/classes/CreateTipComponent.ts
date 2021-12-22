@@ -1,47 +1,38 @@
-import EX_Colors from '@/classes/SetColors'
+import $SetColors from '@/classes/SetColors'
 
 import { TContentTooltip } from "@/classes/types/contentTooltip";
+import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
 
-
-interface ICreateTooltip{
-  createTooltip(): HTMLElement[]
+type TTooltipElements = {
+  tooltip: HTMLElement,
+  arrow: HTMLElement
 }
 
-const EX_CreateTooltip = class $CreateTooltip implements ICreateTooltip{
-  private _theme: string;
-  private _content: TContentTooltip;
-  private _effect: string;
+interface ICreateTooltip{
+  readonly theme: string,
+  readonly content: TContentTooltip,
+  readonly effect: string,
+  createTooltip(): TTooltipElements
+}
 
-  set effect(value:string){
-    this._effect = value;
-  }
-  get effect(): string{
-    return this._effect
-  }
+export default class $CreateTooltip implements ICreateTooltip{
+  readonly theme: string;
+  readonly content: TContentTooltip;
+  readonly effect: string;
+  private EX_Colors:$SetColors;
 
-  set theme(value:string){
-    this._theme = value;
-  }
-  get theme(): string{
-    return this._theme
-  }
 
-  set content(value:TContentTooltip){
-    this._content = value;
-  }
-  get content():TContentTooltip{
-    return this._content
+  constructor(options: TOptionsTooltip) {
+    this.theme = options.theme!;
+    this.content = options.content!;
+    this.effect = options.effect!;
+
+    this.EX_Colors = new $SetColors(this.theme);
   }
 
-  constructor() {
-    this._theme = 'fill';
-    this._content = '';
-    this._effect = 'onClick';
-  }
-
-  createTooltip(): HTMLElement[]{
+  createTooltip(): TTooltipElements{
     const tipElement: HTMLElement = document.createElement("div") as HTMLElement;
-    const bgColor = EX_Colors.setTipColor();
+    const bgColor = this.EX_Colors.setTipColor();
     const arrow = this.createArrow();
 
     tipElement.classList.add(
@@ -55,20 +46,19 @@ const EX_CreateTooltip = class $CreateTooltip implements ICreateTooltip{
 
     this.effect !== 'onFloat' ? tipElement.insertAdjacentElement("beforeend", arrow) : '';
 
-    return [tipElement, arrow]
+    return {
+      tooltip: tipElement,
+      arrow: arrow
+    }
   }
 
   private createArrow(): HTMLElement{
     const arrow: HTMLElement = document.createElement("span") as HTMLElement;
-    const arrowColor = EX_Colors.setArrowColor();
+    const arrowColor = this.EX_Colors.setArrowColor();
 
-    arrow.classList.add(
-      'tooltip-container__arrow'
-    );
+    arrow.classList.add('tooltip-container__arrow');
     arrow.style.setProperty('--arrow-color', arrowColor);
 
     return arrow
   }
 }
-
-export default new EX_CreateTooltip()

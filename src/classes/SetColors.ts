@@ -4,18 +4,11 @@ interface IColors{
   setTipColor(): string
 }
 
-const EX_Colors = class $SetColors implements IColors{
-  private _theme: string;
+export default class $SetColors implements IColors{
+  theme = '';
 
-  set theme(value:string){
-    this._theme = value;
-  }
-  get theme(): string{
-    return this._theme
-  }
-
-  constructor() {
-    this._theme = 'fill';
+  constructor(theme: string) {
+    this.theme = theme;
   }
 
   setArrowColor(): string{
@@ -46,4 +39,3 @@ const EX_Colors = class $SetColors implements IColors{
     }
   }
 }
-export default new EX_Colors()

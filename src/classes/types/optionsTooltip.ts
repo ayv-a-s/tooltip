@@ -5,4 +5,4 @@ export type TOptionsTooltip =  {
   effect?:string,
   position?: string,
   content: TContentTooltip
-} ;
+};

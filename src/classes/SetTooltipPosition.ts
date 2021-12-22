@@ -6,90 +6,73 @@ type TPosition = {
   left: string,
   bottom: string
 }
-
-interface IPosition{
-  position: string,
-  tooltip: TElemTooltip,
+type TFinalComponent = {
   link: TElemTooltip,
-  arrow: TElemTooltip,
+  tooltip: TElemTooltip,
+  arrow: TElemTooltip
+}
+interface IPosition{
+  readonly position: string,
+  finalComponents: TFinalComponent,
   dynamicPosition(x: number, y: number):void
   staticPosition(): void
 }
 
 export default class $TooltipPosition implements IPosition{
-  private _position: string;
-  private _tooltip: TElemTooltip;
-  private _link: TElemTooltip;
-  private _arrow: TElemTooltip;
+  readonly position: string;
+  private _finalComponents: TFinalComponent;
 
-  set position(value:string){
-    this._position = value;
+  set finalComponents(elem: TFinalComponent){
+    this._finalComponents = elem
   }
-  get position(){
-    return this._position
+  get finalComponents(): TFinalComponent{
+    return this._finalComponents
   }
 
-  set tooltip(elem: TElemTooltip){
-    this._tooltip = elem
-  }
-  get tooltip(): TElemTooltip{
-    return this._tooltip
-  }
-
-  set link(elem: TElemTooltip){
-    this._link = elem
-  }
-  get link(): TElemTooltip{
-    return this._link
-  }
-
-  get arrow(): TElemTooltip{
-    return this._arrow
-  }
-  set arrow(elem: TElemTooltip){
-    this._arrow = elem
-  }
-
-  constructor() {
-    this._position = 'top';
-    this._link = null;
-    this._arrow = null;
-    this._tooltip = null;
+  constructor(position: string) {
+    this.position = position;
+    this._finalComponents = {
+      link: null,
+      tooltip: null,
+      arrow: null
+    }
   }
 
   staticPosition(): void{
+    const tooltip = this.finalComponents.tooltip;
     const newPos = this.calculatePosition();
 
-    this.tooltip!.style.bottom = newPos.bottom;
-    this.tooltip!.style.left = newPos.left;
+    tooltip!.style.bottom = newPos.bottom;
+    tooltip!.style.left = newPos.left;
   }
 
   dynamicPosition(x: number, y: number): void{
-    const tipInfo = EX_GetMeasurements.getInfo(this.tooltip);
+    const tooltip = this.finalComponents.tooltip;
+    const tipInfo = EX_GetMeasurements.getInfo(tooltip);
 
     switch (this.position) {
       case 'bottom':
-        this.tooltip!.style.left = x - tipInfo.width + 'px';
-        this.tooltip!.style.top = y + 'px';
+        tooltip!.style.left = x - tipInfo.width + 'px';
+        tooltip!.style.top = y + 'px';
         break;
       case 'left':
-        this.tooltip!.style.left = x - tipInfo.width + 'px';
-        this.tooltip!.style.top = y - tipInfo.height + 'px';
+        tooltip!.style.left = x - tipInfo.width + 'px';
+        tooltip!.style.top = y - tipInfo.height + 'px';
         break;
       case 'right':
-        this.tooltip!.style.left = x + 'px';
-        this.tooltip!.style.top = y + 'px';
+        tooltip!.style.left = x + 'px';
+        tooltip!.style.top = y + 'px';
         break;
       default:
-        this.tooltip!.style.left = x + 'px';
-        this.tooltip!.style.top = y - tipInfo.height + 'px';
+        tooltip!.style.left = x + 'px';
+        tooltip!.style.top = y - tipInfo.height + 'px';
         break;
     }
   }
 
   private calculatePosition(): TPosition{
-    const link = EX_GetMeasurements.getInfo(this.link!);
-    const tip = EX_GetMeasurements.getInfo(this.tooltip!);
+    const link = EX_GetMeasurements.getInfo(this.finalComponents.link!);
+    const tip = EX_GetMeasurements.getInfo(this.finalComponents.tooltip!);
     switch (this.position) {
       case 'left':
       case 'right':
@@ -141,9 +124,9 @@ export default class $TooltipPosition implements IPosition{
 
   private arrowPosition(pos:string): void {
 
-    const link = EX_GetMeasurements.getInfo(this.link!);
-    const tip = EX_GetMeasurements.getInfo(this.tooltip!);
-    const arrow = this.arrow!;
+    const link = EX_GetMeasurements.getInfo(this.finalComponents.link!);
+    const tip = EX_GetMeasurements.getInfo(this.finalComponents.tooltip!);
+    const arrow = this.finalComponents.arrow!;
 
     arrow.dataset.pos = pos;
 

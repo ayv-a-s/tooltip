@@ -1,8 +1,5 @@
-import $AddListener from "@/classes/SetEventsListeners";
-import $TipsComponents from "@/classes/GetTipsСomponents";
+import $CreateTooltip from "@/classes/CreateTipComponent";
 import $TooltipPosition from "@/classes/SetTooltipPosition";
-import EX_Colors from "@/classes/SetColors";
-import EX_CreateTooltip from "@/classes/CreateTipComponent";
 
 import { TContentTooltip } from "@/classes/types/contentTooltip";
 import { TElemTooltip } from "@/classes/types/elemTooltip";
@@ -10,78 +7,99 @@ import { TOptionsTooltip } from "@/classes/types/optionsTooltip";
 
 import '../assets/tooltip.css'
 
+type TFinalComponent = {
+  link: TElemTooltip,
+  tooltip: TElemTooltip,
+  arrow: TElemTooltip
+}
+
 interface ITooltip {
-  theme: string,
-  effect: string,
-  position: string,
-  content: TContentTooltip,
-  bindProperties(): this,
-  bindElements(link: TElemTooltip): this,
-  initTooltip(link: TElemTooltip): this,
+  readonly theme: string,
+  readonly effect: string,
+  readonly position: string,
+  readonly content: TContentTooltip,
+  isTooltipOpened: boolean
+  finalComponents: TFinalComponent,
+  setPosition(e?: MouseEvent): this,
+  initTooltip(link: TElemTooltip): this
 }
 
 export default class $Tooltip implements ITooltip {
-  theme: string;
-  effect: string;
-  position: string;
-  content: TContentTooltip;
+  readonly theme: string;
+  readonly effect: string;
+  readonly position: string;
+  readonly content: TContentTooltip;
+  readonly EX_TooltipPosition: $TooltipPosition;
+  private _isTooltipOpened: boolean;
+  private EX_CreateTooltip: $CreateTooltip;
+  public finalComponents: TFinalComponent;
 
-  public EX_Events: $AddListener = new $AddListener();
-  public EX_TooltipPosition: $TooltipPosition= new $TooltipPosition();
-
-  private EX_TipsComponent: $TipsComponents  = new $TipsComponents();
+  set isTooltipOpened(state: boolean){
+    this._isTooltipOpened = state;
+    this.changeTipsState();
+  }
+  get isTooltipOpened(): boolean{
+    return this._isTooltipOpened;
+  }
 
   constructor(options: TOptionsTooltip) {
     this.theme = options?.theme ? options.theme : '';
     this.effect = options?.effect ? options.effect : 'onClick';
     this.position = options?.position ? options.position : 'top';
     this.content = options.content;
-  }
-
-  bindProperties(): this {
-    this.EX_TooltipPosition.position = this.position;
-
-    this.EX_Events.event = this.effect;
-
-    EX_CreateTooltip.theme = this.theme;
-    EX_CreateTooltip.content = this.content;
-    EX_CreateTooltip.effect = this.effect;
-
-    EX_Colors.theme = this.theme;
-
-    return this
-  }
-
-  bindElements(link: TElemTooltip): this {
-    const tip = EX_CreateTooltip.createTooltip();
-
-    this.EX_TipsComponent.link = link;
-    this.EX_TipsComponent.tooltip = tip[0];
-    this.EX_TipsComponent.arrow = tip[1];
-
-    this.EX_TooltipPosition.link = link;
-    this.EX_TooltipPosition.tooltip = tip[0];
-    this.EX_TooltipPosition.arrow = tip[1];
-
-    this.EX_Events.link = link;
-    this.EX_Events.tooltip = tip[0];
-    this.EX_Events.TooltipPosition = this.EX_TooltipPosition;
-
-    return this
+    this._isTooltipOpened = false;
+    this.finalComponents = {
+      link: null,
+      tooltip: null,
+      arrow: null
+    }
+    this.EX_CreateTooltip = new $CreateTooltip({
+      theme: this.theme,
+      content: this.content,
+      effect: this.effect
+    })
+    this.EX_TooltipPosition = new $TooltipPosition(this.position)
   }
 
   initTooltip(link: TElemTooltip): this {
+    const elem = this.EX_CreateTooltip.createTooltip();
+
     if (link) {
-      link.insertAdjacentElement("beforeend",  this.EX_TipsComponent.tooltip as HTMLElement);
+      link.insertAdjacentElement("beforeend",  elem.tooltip as HTMLElement);
       link.style.position = 'relative';
       link.style.cursor = 'pointer';
 
-      this.effect !== 'onFloat' ? this.EX_TooltipPosition.staticPosition() : this.EX_TooltipPosition.dynamicPosition(0,0);
-      this.EX_Events.addEventListener();
+      this.finalComponents = {
+        link: link,
+        tooltip: elem.tooltip,
+        arrow: elem.arrow
+      }
 
+      this.EX_TooltipPosition.finalComponents = this.finalComponents;
     } else {
       console.log('Не найдено элемента с укзанным id');
     }
     return this
+  }
+  setPosition(e?: MouseEvent): this{
+    switch (this.effect){
+     case 'onFloat':
+       if (e) {
+         this.EX_TooltipPosition.dynamicPosition(e.clientX, e.clientY);
+       } else {
+         this.EX_TooltipPosition.dynamicPosition(0, 0);
+       }
+      break;
+      default:
+        this.EX_TooltipPosition.staticPosition();
+      break;
+    }
+    return this
+  }
+
+  private changeTipsState(): void {
+    this.isTooltipOpened ?
+      this.finalComponents.tooltip!.classList.remove('hidden') :
+      this.finalComponents.tooltip!.classList.add('hidden');
   }
 }
