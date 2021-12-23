@@ -2,7 +2,7 @@
   <div class="about">
     <h1
       data-tooltip="<b>ПодсказОчка</b> <br/> dfujbadfjnbo ;ajbjadfjb ln badkfj bnkaj dfnb;k jn;ROEIJ GVPDJF LKBad lfjnbv nfrjf"
-      :data-options ="'error onFloat  bottom'"
+      :data-options ="'error , onFloat , top'"
     >
       This is an about page
     </h1>
@@ -16,8 +16,7 @@
         </span>
         aa aaaa aaa a aa a a aaaa aa aaa aaa a
         <span
-          data-tooltip="Я стильная подсказочка"
-          :data-options ="'warning,left'"
+          @click="ib=!ib"
         >
           tip
         </span>
@@ -35,6 +34,12 @@ import Vue from "vue";
 import initTooltip from '../functions'
 export default Vue.extend({
   name: 'About',
+  data(){
+    const ib = false;
+    return {
+      ib
+    }
+  },
   mounted() {
      initTooltip();
   }
@@ -45,5 +50,8 @@ export default Vue.extend({
 .container{
   margin: auto;
   max-width: 100%;
+}
+body {
+  overflow: hidden;
 }
 </style>

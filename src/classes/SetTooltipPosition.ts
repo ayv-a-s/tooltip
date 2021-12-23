@@ -10,8 +10,8 @@ type TPosition = {
 interface IPosition{
   readonly position: string,
   finalComponents: TFinalComponent,
-  dynamicPosition(x: number, y: number):void
-  staticPosition(): void
+  setDynamicPosition(x: number, y: number): void,
+  setStaticPosition(): void
 }
 
 export default class $TooltipPosition implements IPosition{
@@ -34,36 +34,46 @@ export default class $TooltipPosition implements IPosition{
     }
   }
 
-  staticPosition(): void{
+  public setStaticPosition(): void{
     const tooltip = this.finalComponents.tooltip;
-    const newPos = this.calculatePosition();
+    if (tooltip) {
+      const newPos = this.calculatePosition();
 
-    tooltip!.style.bottom = newPos.bottom;
-    tooltip!.style.left = newPos.left;
+      tooltip.style.bottom = newPos.bottom;
+      tooltip.style.left = newPos.left;
+    } else {
+      console.error('Tooltip is null or undefined');
+    }
   }
 
-  dynamicPosition(x: number, y: number): void{
+  public setDynamicPosition(x: number, y: number): void{
     const tooltip = this.finalComponents.tooltip;
-    const tipInfo = EX_GetMeasurements.getInfo(tooltip);
 
-    switch (this.position) {
-      case 'bottom':
-        tooltip!.style.left = x - tipInfo.width + 'px';
-        tooltip!.style.top = y + 'px';
-        break;
-      case 'left':
-        tooltip!.style.left = x - tipInfo.width + 'px';
-        tooltip!.style.top = y - tipInfo.height + 'px';
-        break;
-      case 'right':
-        tooltip!.style.left = x + 'px';
-        tooltip!.style.top = y + 'px';
-        break;
-      default:
-        tooltip!.style.left = x + 'px';
-        tooltip!.style.top = y - tipInfo.height + 'px';
-        break;
+    if (tooltip) {
+      const tipInfo = EX_GetMeasurements.getInfo(tooltip);
+
+      switch (this.position) {
+        case 'bottom':
+          tooltip.style.left = x - tipInfo.width + 'px';
+          tooltip.style.top = y + 'px';
+          break;
+        case 'left':
+          tooltip.style.left = x - tipInfo.width + 'px';
+          tooltip.style.top = y - tipInfo.height + 'px';
+          break;
+        case 'right':
+          tooltip.style.left = x + 'px';
+          tooltip.style.top = y + 'px';
+          break;
+        default:
+          tooltip.style.left = x + 'px';
+          tooltip.style.top = y - tipInfo.height + 'px';
+          break;
+      }
+    } else {
+      console.error('Tooltip is null or undefined');
     }
+
   }
 
   private calculatePosition(): TPosition{
@@ -73,29 +83,29 @@ export default class $TooltipPosition implements IPosition{
       case 'left':
       case 'right':
         if (link.left >= tip.width && this.position === 'left') {
-          this.arrowPosition(this.position)
+          this.setArrowPosition(this.position)
           return {
             left: `${-tip.width - 9}px`,
             bottom: `${link.height / 2 - tip.height / 2}px`
           };
         }
         if (link.right >= tip.width && this.position === 'right') {
-          this.arrowPosition(this.position)
+          this.setArrowPosition(this.position)
           return {
             left: `${link.width + 9}px`,
             bottom: `${link.height / 2 - tip.height / 2}px`
           };
         }
         else {
-          this.arrowPosition('top');
-          return setDefaultPos('top');
+          this.setArrowPosition('top');
+          return checkSpaceAround('top');
         }
       default:
-        this.arrowPosition(this.position);
-        return setDefaultPos(this.position);
+        this.setArrowPosition(this.position);
+        return checkSpaceAround(this.position);
     }
 
-    function setDefaultPos(pos: string):TPosition {
+    function checkSpaceAround(pos: string):TPosition {
       //если место есть только справа
       if (link.right > tip.width/2 && link.left <= tip.width/2) {
         return {
@@ -118,32 +128,34 @@ export default class $TooltipPosition implements IPosition{
     }
   }
 
-  private arrowPosition(pos:string): void {
-
+  private setArrowPosition(pos:string): void {
     const link = EX_GetMeasurements.getInfo(this.finalComponents.link!);
     const tip = EX_GetMeasurements.getInfo(this.finalComponents.tooltip!);
-    const arrow = this.finalComponents.arrow!;
 
-    arrow.dataset.pos = pos;
+    const arrow = this.finalComponents.arrow;
 
-    switch (pos) {
-      case 'bottom':
-        arrow.style.top = '-10px';
-        arrow.style.left  = `${link.left - tip.left + link.width/2 - 7}px`;
-        break;
-      case 'left':
-        arrow.style.top = `${link.top - tip.top + 2}px`;
-        arrow.style.left  = `${tip.width - 2}px`;
-        break;
-      case 'right':
-        arrow.style.top = `${link.top - tip.top + 2}px`;
-        arrow.style.left  = '-10px';
-        break;
-      default:
-        arrow.style.top = `${tip.height - 2}px`;
-        arrow.style.left  = `${link.left - tip.left + link.width/2 - 7}px`;
-        break;
-    }
+    if(arrow){
+      arrow.dataset.pos = pos;
+      switch (pos) {
+        case 'bottom':
+          arrow.style.top = '-10px';
+          arrow.style.left  = `${link.left - tip.left + link.width/2 - 7}px`;
+          break;
+        case 'left':
+          arrow.style.top = `${link.top - tip.top + 2}px`;
+          arrow.style.left  = `${tip.width - 2}px`;
+          break;
+        case 'right':
+          arrow.style.top = `${link.top - tip.top + 2}px`;
+          arrow.style.left  = '-10px';
+          break;
+        default:
+          arrow.style.top = `${tip.height - 2}px`;
+          arrow.style.left  = `${link.left - tip.left + link.width/2 - 7}px`;
+          break;
+      }
+    } else console.error('Arrow is null');
+
   }
 }
 

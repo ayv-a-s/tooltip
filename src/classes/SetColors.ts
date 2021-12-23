@@ -13,7 +13,7 @@ export default class $SetColors implements IColors{
     this.theme = theme;
   }
 
-  setArrowColor(): string{
+  public setArrowColor(): string{
     switch (this.theme) {
       case 'error':
         return '#d05358'
@@ -26,7 +26,7 @@ export default class $SetColors implements IColors{
     }
   }
 
-  setTipColor(): string{
+  public setTipColor(): string{
     switch (this.theme) {
       case 'error':
         return '#d05358'
@@ -34,10 +34,8 @@ export default class $SetColors implements IColors{
         return '#ffb002'
       case 'success':
         return '#32a071'
-      case 'fill':
-        return '#ffffff'
       default:
-        return 'transparent'
+        return '#ffffff'
     }
   }
 }

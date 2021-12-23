@@ -1,7 +1,7 @@
 import $Tooltip from "@/classes/Tooltip";
 import $AddListener from "@/classes/SetEventsListeners";
 
-import { TProperties, TPosition, TEffect, TTheme, TContent } from "@/classes/types/Properties";
+import { TProperties, TPosition, TTrigger, TTheme } from "@/classes/types/Properties";
 
 enum Themes {
   'error',
@@ -9,7 +9,7 @@ enum Themes {
   'success' ,
   'fill'
 }
-enum Effects {
+enum Triggers {
   'onHover',
   'onClick',
   'onFloat'
@@ -30,24 +30,23 @@ function initTooltip():void {
     try {
       EX_Tooltips.push(
         new $Tooltip(GetProperties(item))
-          .initTooltip(item)
-          .setPosition()
+          .setTooltip(item)
+          .setTooltipPosition()
       )
     } catch {
       console.error('There is no content for Tooltip');
-      return '';
+      return
     }
   })
-  return new $AddListener(EX_Tooltips).addEventListener().changeTooltipState()
+  new $AddListener(EX_Tooltips).addLocalEvents().addGlobalEvents();
 }
 
 function GetProperties(item: HTMLElement): TProperties{
-  //TODO: удалить пробелы из options
   const content = item.getAttribute('data-tooltip')!;
   const options = item.getAttribute('data-options')!;
   const props: TProperties = {
-    theme : '',
-    effect: 'onClick',
+    theme : 'fill',
+    trigger: 'onClick',
     position : 'top',
     content: content,
   }
@@ -55,19 +54,17 @@ function GetProperties(item: HTMLElement): TProperties{
     console.error('Set Tooltips content!');
   }
   if (options) {
-    options.split(',').forEach((point)=> {
-      console.log(point);
+    options.replace(/\s/g, '').split(',').forEach((point)=> {
       if (Object.values(Themes).includes(point)){
         props['theme'] = point as TTheme;
-      } else if (Object.values(Effects).includes(point)){
-        props['effect'] = point as TEffect;
+      } else if (Object.values(Triggers).includes(point)){
+        props['trigger'] = point as TTrigger;
       } else if (Object.values(Positions).includes(point)) {
         props['position'] = point as TPosition;
       }
     })
   }
   return props
-
 }
 
 export default initTooltip;

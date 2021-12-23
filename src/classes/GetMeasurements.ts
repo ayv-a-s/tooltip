@@ -1,5 +1,4 @@
-import { TElementPosition } from '@/classes/types/ElementPosition'
-import { TDomElement } from "@/classes/types/DomElement";
+import { TElementPosition } from '@/classes/types/ElementPosition';
 
 type TInfo = {
   width: number,
@@ -7,12 +6,12 @@ type TInfo = {
 } & TElementPosition
 
 interface IGetMeasurements{
-  getInfo(el: TDomElement): TInfo
+  getInfo(el: HTMLElement): TInfo
 }
 
 const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
 
-  getInfo(el: TDomElement): TInfo{
+  public getInfo(el: HTMLElement): TInfo{
     return {
       width:  this.getWidth(el),
       height: this.getHeight(el),
@@ -23,16 +22,16 @@ const EX_GetMeasurements = class $GetMeasurements implements IGetMeasurements {
     }
   }
 
-  private getWidth(elem: TDomElement): number{
-    return elem!.offsetWidth;
+  private getWidth(elem: HTMLElement): number{
+    return elem.offsetWidth;
   }
 
-  private getHeight(elem: TDomElement): number {
-    return elem!.offsetHeight
+  private getHeight(elem: HTMLElement): number {
+    return elem.offsetHeight
   }
 
-  private getElemCoords(elem: TDomElement): TElementPosition{
-    const boxRect = elem!.getBoundingClientRect();
+  private getElemCoords(elem: HTMLElement): TElementPosition{
+    const boxRect = elem.getBoundingClientRect();
     return {
       top: boxRect.top,
       right: window.innerWidth - boxRect.right, // так как elem.getBoundingClientRect().right - это elem.left + elem.width

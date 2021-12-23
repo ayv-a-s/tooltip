@@ -1,6 +1,6 @@
 import $SetColors from '@/classes/SetColors'
 
-import { TProperties, TEffect, TTheme, TContent } from "@/classes/types/Properties";
+import { TProperties, TTrigger, TTheme, TContent } from "@/classes/types/Properties";
 
 type TTooltipElements = {
   tooltip: HTMLElement,
@@ -10,28 +10,28 @@ type TTooltipElements = {
 interface ICreateTooltip{
   readonly theme: TTheme,
   readonly content: TContent,
-  readonly effect: TEffect,
+  readonly trigger: TTrigger,
   createTooltip(): TTooltipElements
 }
 
 export default class $CreateTooltip implements ICreateTooltip{
   readonly theme: TTheme;
   readonly content: TContent;
-  readonly effect: TEffect;
-  private EX_Colors:$SetColors;
+  readonly trigger: TTrigger;
+  private EX_SetColors: $SetColors;
 
 
   constructor(options: TProperties) {
-    this.theme = options.theme!;
-    this.content = options.content!;
-    this.effect = options.effect!;
+    this.theme = options.theme;
+    this.content = options.content;
+    this.trigger = options.trigger;
 
-    this.EX_Colors = new $SetColors(this.theme);
+    this.EX_SetColors = new $SetColors(this.theme);
   }
 
-  createTooltip(): TTooltipElements{
+  public createTooltip(): TTooltipElements{
     const tipElement: HTMLElement = document.createElement("div") as HTMLElement;
-    const bgColor = this.EX_Colors.setTipColor();
+    const bgColor = this.EX_SetColors.setTipColor();
     const arrow = this.createArrow();
 
     tipElement.classList.add(
@@ -43,7 +43,7 @@ export default class $CreateTooltip implements ICreateTooltip{
     tipElement.innerHTML  =  `<div>${this.content}</div>`;
 
 
-    this.effect !== 'onFloat' ? tipElement.insertAdjacentElement("beforeend", arrow) : '';
+    this.trigger !== 'onFloat' ? tipElement.insertAdjacentElement("beforeend", arrow) : '';
 
     return {
       tooltip: tipElement,
@@ -53,7 +53,7 @@ export default class $CreateTooltip implements ICreateTooltip{
 
   private createArrow(): HTMLElement{
     const arrow: HTMLElement = document.createElement("span") as HTMLElement;
-    const arrowColor = this.EX_Colors.setArrowColor();
+    const arrowColor = this.EX_SetColors.setArrowColor();
 
     arrow.classList.add('tooltip-container__arrow');
     arrow.style.setProperty('--arrow-color', arrowColor);
