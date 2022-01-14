@@ -16,7 +16,8 @@
         </span>
         aa aaaa aaa a aa a a aaaa aa aaa aaa a
         <span
-          @click="ib=!ib"
+          data-tooltip="jgfxb"
+          :data-options ="'warning, left'"
         >
           tip
         </span>
@@ -34,12 +35,6 @@ import Vue from "vue";
 import initTooltip from '../functions'
 export default Vue.extend({
   name: 'About',
-  data(){
-    const ib = false;
-    return {
-      ib
-    }
-  },
   mounted() {
      initTooltip();
   }

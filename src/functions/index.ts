@@ -1,5 +1,5 @@
 import $Tooltip from "@/classes/Tooltip";
-import $AddListener from "@/classes/SetEventsListeners";
+import EX_EventListener from "@/classes/SetEventsListeners";
 
 import { TProperties, TPosition, TTrigger, TTheme } from "@/classes/types/Properties";
 
@@ -23,22 +23,20 @@ enum Positions {
 
 function initTooltip():void {
 
-  const EX_Tooltips: $Tooltip[] = [];
   const links = document.querySelectorAll<HTMLElement>('[data-tooltip]');
 
   links.forEach((item)=>{
     try {
-      EX_Tooltips.push(
+      EX_EventListener.attach(
         new $Tooltip(GetProperties(item))
-          .setTooltip(item)
-          .setTooltipPosition()
+        .setTooltip(item)
+        .setTooltipPosition()
       )
     } catch {
       console.error('There is no content for Tooltip');
       return
     }
   })
-  new $AddListener(EX_Tooltips).addLocalEvents().addGlobalEvents();
 }
 
 function GetProperties(item: HTMLElement): TProperties{

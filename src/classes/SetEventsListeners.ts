@@ -1,20 +1,23 @@
 import $Tooltip from "@/classes/Tooltip"
 
 interface IEvent {
-  readonly tips: $Tooltip[]
-  addLocalEvents(): this,
-  addGlobalEvents():void
+  attach(observer: $Tooltip): void
 }
 
-export default class $AddListener implements IEvent{
-  readonly tips: $Tooltip[] = []
 
-  constructor(arr: $Tooltip[]) {
-    this.tips = arr;
+const EX_EventListener = class $AddListener implements IEvent{
+  private observers: $Tooltip[] = [];
+
+  public attach(observer: $Tooltip): void {
+    const isExist = this.observers.includes(observer);
+    if (!isExist) {
+      this.observers.push(observer);
+      this.addLocalEvents(observer);
+      this.addGlobalEvents()
+    }
   }
 
-  public addLocalEvents(): this{
-    this.tips.forEach((item)=>{
+  private addLocalEvents(item: $Tooltip): void{
       const link = item.finalComponents.link;
       if (link) {
         switch (item.trigger){
@@ -47,13 +50,11 @@ export default class $AddListener implements IEvent{
             break;
         }
       } else console.error('Link for Tooltip is not defined');
-    })
-    return this
   }
 
-  public addGlobalEvents():void{
+  private addGlobalEvents():void{
     document.onclick= (e) => {
-      this.tips.forEach((item)=>{
+      this.observers.forEach((item)=> {
         const link = item.finalComponents.link;
         const tooltip = item.finalComponents.tooltip;
 
@@ -64,11 +65,10 @@ export default class $AddListener implements IEvent{
 
         } else
           console.error('Link for Tooltip is not defined');
-
       })
     }
     window.onresize = () =>{
-      this.tips.forEach((item)=>{
+      this.observers.forEach((item)=>{
         item.setTooltipPosition();
       })
     }
@@ -76,3 +76,4 @@ export default class $AddListener implements IEvent{
 
 }
 
+export default new EX_EventListener()
