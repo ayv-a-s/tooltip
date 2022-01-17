@@ -32,7 +32,7 @@
 <script lang="ts">
 
 import Vue from "vue";
-import InitTooltip from '../functions/InitTooltip'
+import InitTooltip from '../functions/initTooltip'
 export default Vue.extend({
   name: 'About',
   mounted() {
