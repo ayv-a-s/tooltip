@@ -1,7 +1,4 @@
-import $Tooltip from "@/classes/Tooltip";
-import EX_EventListener from "@/classes/SetEventsListeners";
-
-import { TProperties, TPosition, TTrigger, TTheme } from "@/classes/types/Properties";
+import { TPosition, TProperties, TTheme, TTrigger } from "@/classes/types/Properties";
 
 enum Themes {
   'error',
@@ -21,25 +18,7 @@ enum Positions {
   'right'
 }
 
-function initTooltip():void {
-
-  const links = document.querySelectorAll<HTMLElement>('[data-tooltip]');
-
-  links.forEach((item)=>{
-    try {
-      EX_EventListener.attach(
-        new $Tooltip(GetProperties(item))
-        .setTooltip(item)
-        .setTooltipPosition()
-      )
-    } catch {
-      console.error('There is no content for Tooltip');
-      return
-    }
-  })
-}
-
-function GetProperties(item: HTMLElement): TProperties{
+export default function GetTooltipProperties(item: HTMLElement): TProperties{
   const content = item.getAttribute('data-tooltip')!;
   const options = item.getAttribute('data-options')!;
   const props: TProperties = {
@@ -64,5 +43,3 @@ function GetProperties(item: HTMLElement): TProperties{
   }
   return props
 }
-
-export default initTooltip;
