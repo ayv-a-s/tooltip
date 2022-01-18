@@ -1,4 +1,4 @@
-import { TTheme } from "@/classes/types/Properties";
+import { TTheme } from "@/types/Properties";
 
 interface IColors{
   readonly theme:TTheme,

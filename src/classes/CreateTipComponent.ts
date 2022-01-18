@@ -1,6 +1,6 @@
 import $SetColors from '@/classes/SetColors'
 
-import { TProperties, TTrigger, TTheme, TContent } from "@/classes/types/Properties";
+import { TProperties, TTrigger, TTheme, TContent } from "@/types/Properties";
 
 type TTooltipElements = {
   tooltip: HTMLElement,
@@ -14,7 +14,7 @@ interface ICreateTooltip{
   createTooltip(): TTooltipElements
 }
 
-export default class $CreateTooltip implements ICreateTooltip{
+export default class $CreateTooltip implements ICreateTooltip {
   readonly theme: TTheme;
   readonly content: TContent;
   readonly trigger: TTrigger;

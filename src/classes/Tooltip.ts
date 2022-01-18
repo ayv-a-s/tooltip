@@ -1,9 +1,9 @@
 import $CreateTooltip from "@/classes/CreateTipComponent";
 import $TooltipPosition from "@/classes/SetTooltipPosition";
 
-import { TProperties, TPosition, TTrigger, TTheme, TContent } from "@/classes/types/Properties";
-import { TDomElement } from "@/classes/types/DomElement";
-import { TFinalComponent } from "@/classes/types/FinalComponent";
+import { TProperties, TPosition, TTrigger, TTheme, TContent } from "@/types/Properties";
+import { TDomElement } from "@/types/DomElement";
+import { TFinalComponent } from "@/types/FinalComponent";
 
 import '../assets/tooltip.css'
 
@@ -23,10 +23,23 @@ export default class $Tooltip implements ITooltip {
   readonly trigger: TTrigger;
   readonly position: TPosition;
   readonly content: TContent;
-  readonly EX_TooltipPosition: $TooltipPosition;
-  private _isTooltipOpened: boolean;
-  private _finalComponents: TFinalComponent;
+  private _isTooltipOpened = false;
+  private _finalComponents: TFinalComponent = {
+    link: null,
+    tooltip: null,
+    arrow: null
+  };
   private EX_CreateTooltip: $CreateTooltip;
+  private EX_TooltipPosition: $TooltipPosition;
+
+  constructor(options: TProperties) {
+    this.theme = options.theme;
+    this.trigger = options.trigger;
+    this.position = options.position;
+    this.content = options.content;
+    this.EX_CreateTooltip = new $CreateTooltip(options);
+    this.EX_TooltipPosition = new $TooltipPosition(this.position);
+  }
 
   set isTooltipOpened(state: boolean){
     this._isTooltipOpened = state;
@@ -40,26 +53,6 @@ export default class $Tooltip implements ITooltip {
   }
   get finalComponents(): TFinalComponent{
     return this._finalComponents;
-  }
-
-  constructor(options: TProperties) {
-    this.theme = options.theme;
-    this.trigger = options.trigger;
-    this.position = options.position;
-    this.content = options.content;
-    this._isTooltipOpened = false;
-    this._finalComponents = {
-      link: null,
-      tooltip: null,
-      arrow: null
-    }
-    this.EX_CreateTooltip = new $CreateTooltip({
-      theme: this.theme,
-      content: this.content,
-      trigger: this.trigger,
-      position: this.position
-    })
-    this.EX_TooltipPosition = new $TooltipPosition(this.position)
   }
 
   public setTooltip(link: TDomElement): this {
@@ -80,6 +73,7 @@ export default class $Tooltip implements ITooltip {
     } else {
       console.error('No item found with "data-tooltip"');
     }
+
     return this
   }
   public setTooltipPosition(e?: MouseEvent): this{

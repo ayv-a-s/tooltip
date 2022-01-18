@@ -1,6 +1,6 @@
 import EX_GetMeasurements from "@/classes/GetMeasurements";
 
-import { TFinalComponent } from "@/classes/types/FinalComponent";
+import { TFinalComponent } from "@/types/FinalComponent";
 
 type TPosition = {
   left: string,
@@ -16,22 +16,21 @@ interface IPosition{
 
 export default class $TooltipPosition implements IPosition{
   readonly position: string;
-  private _finalComponents: TFinalComponent;
+  private _finalComponents: TFinalComponent = {
+    link: null,
+    tooltip: null,
+    arrow: null
+  };
+
+  constructor(position: string) {
+    this.position = position;
+  }
 
   set finalComponents(elem: TFinalComponent){
     this._finalComponents = elem
   }
   get finalComponents(): TFinalComponent{
     return this._finalComponents
-  }
-
-  constructor(position: string) {
-    this.position = position;
-    this._finalComponents = {
-      link: null,
-      tooltip: null,
-      arrow: null
-    }
   }
 
   public setStaticPosition(): void{
@@ -48,7 +47,6 @@ export default class $TooltipPosition implements IPosition{
 
   public setDynamicPosition(x: number, y: number): void{
     const tooltip = this.finalComponents.tooltip;
-
     if (tooltip) {
       const tipInfo = EX_GetMeasurements.getInfo(tooltip);
 

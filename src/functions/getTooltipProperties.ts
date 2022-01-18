@@ -1,4 +1,4 @@
-import { TPosition, TProperties, TTheme, TTrigger } from "@/classes/types/Properties";
+import { TPosition, TProperties, TTheme, TTrigger } from "@/types/Properties";
 
 enum Themes {
   'error',

@@ -1,4 +1,4 @@
-import { TElementPosition } from '@/classes/types/ElementPosition';
+import { TElementPosition } from '@/types/ElementPosition';
 
 type TInfo = {
   width: number,

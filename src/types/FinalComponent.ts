@@ -1,4 +1,4 @@
-import { TDomElement } from "@/classes/types/DomElement";
+import { TDomElement } from "@/types/DomElement";
 
 export type TFinalComponent = {
   link: TDomElement,
