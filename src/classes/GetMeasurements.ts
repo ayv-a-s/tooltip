@@ -1,3 +1,11 @@
+/**
+ * Получает текущее положение элемента на странице, его ширину и высоту,
+ * и возвращает в виде объекта
+ *
+ * @param {HTMLElement} - элемент, параметры которого нужно вычислить
+ * @return {TInfo} - объект с параметрами
+ * */
+
 import { TElementPosition } from '@/types/ElementPosition';
 
 type TInfo = {

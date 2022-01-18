@@ -9,15 +9,23 @@ const EX_EventListener = class $AddListener implements IEvent{
   private observers: $Tooltip[] = [];
   private events: any;
 
-  public detach(observer: $Tooltip):void {
-    this.removeLocalEvents(observer);
-  }
+  //Метод, подписывающий экземпляры на события
   public attach(observer: $Tooltip): void {
     const isExist = this.observers.includes(observer);
     if (!isExist) {
       this.observers.push(observer);
       this.addLocalEvents(observer);
-      this.addGlobalEvents()
+      this.addGlobalEvents();
+    }
+  }
+  //Метод, отписывающий экземпляры
+  public detach(observer: $Tooltip):void {
+    const isExist = this.observers.includes(observer);
+
+    this.removeLocalEvents(observer);
+    if (isExist) {
+      const idx = this.observers.indexOf(observer);
+      delete this.observers[idx];
     }
   }
 
@@ -61,7 +69,9 @@ const EX_EventListener = class $AddListener implements IEvent{
       }
     }
   }
+
   private addGlobalEvents():void{
+    //Для того, чтобы закрывать тултип по клику вне элемента
     document.onclick= (e) => {
       this.observers.forEach((item)=> {
         const link = item.finalComponents.link;
@@ -76,6 +86,7 @@ const EX_EventListener = class $AddListener implements IEvent{
           console.error('Link for Tooltip is not defined');
       })
     }
+    //Для того, чтобы пересчитывыать положение тултипа при изменении размера экрана
     window.onresize = () =>{
       this.observers.forEach((item)=>{
         item.setTooltipPosition();
@@ -87,7 +98,7 @@ const EX_EventListener = class $AddListener implements IEvent{
 
 export default new EX_EventListener()
 
-
+//Вспомогательный класс для обработки событий
 class Events {
   observer:$Tooltip;
 

@@ -33,6 +33,7 @@ export default class $TooltipPosition implements IPosition{
     return this._finalComponents
   }
 
+  //Метод вычисляет положение тултипа для onHover и onClick
   public setStaticPosition(): void{
     const tooltip = this.finalComponents.tooltip;
     if (tooltip) {
@@ -45,6 +46,7 @@ export default class $TooltipPosition implements IPosition{
     }
   }
 
+  //Метод вычисляет положение тултипа для onFloat
   public setDynamicPosition(x: number, y: number): void{
     const tooltip = this.finalComponents.tooltip;
     if (tooltip) {
@@ -74,6 +76,7 @@ export default class $TooltipPosition implements IPosition{
 
   }
 
+  //Метод пересчитывает положение тултипа, если он не помещается на странице
   private calculatePosition(): TPosition{
     const link = EX_GetMeasurements.getInfo(this.finalComponents.link!);
     const tip = EX_GetMeasurements.getInfo(this.finalComponents.tooltip!);
